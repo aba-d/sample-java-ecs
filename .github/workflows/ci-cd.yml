@@ -82,7 +82,7 @@ jobs:
     with:
       language: 'java'                           # change from 'csharp' to 'java'
       project-path: 'sample-java-ecs'            # path to your Java project root
-      dockerfile-path: 'sample-java-ecs/Dockerfile'  # Dockerfile path
+      dockerfile-path: './Dockerfile'  # Dockerfile path
       language-version: '17'                     # JDK version (change to match your project)
       environment: 'dev'                         # environment can be dev, qa, etc.
       image-tag: '${{ github.sha }}'             # Docker image tag (commit SHA)
