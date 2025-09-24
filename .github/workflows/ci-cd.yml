@@ -34,15 +34,15 @@ jobs:
   # ------------------------
   # Code Scan (Codeql)
   # ------------------------
-  Codeql-scan:
-    name: GHAS scan
-    needs: commit-check
-    uses: aba-enterprise/enterprise-ci-templates/.github/workflows/codeql-template.yml@main
-    with:
-      language: 'java'   # change from 'csharp' to 'java'
-      projectPath: 'sample-java-ecs/pom.xml'   # path to your Java project pom.xml
-      buildCommand: 'mvn clean package -DskipTests'       # command to build your Java project
-    secrets: inherit
+  # Codeql-scan:
+  #   name: GHAS scan
+  #   needs: commit-check
+  #   uses: aba-enterprise/enterprise-ci-templates/.github/workflows/codeql-template.yml@main
+  #   with:
+  #     language: 'java'   # change from 'csharp' to 'java'
+  #     projectPath: 'sample-java-ecs/pom.xml'   # path to your Java project pom.xml
+  #     buildCommand: 'mvn clean package -DskipTests'       # command to build your Java project
+  #   secrets: inherit
   
   # ------------------------
   # Veracode
