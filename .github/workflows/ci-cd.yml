@@ -98,8 +98,8 @@ jobs:
     uses: aba-enterprise/enterprise-ci-templates/.github/workflows/ecs-deployment-template.yml@main
     with:
       environment: dev
-      language: csharp
-  
+      language: java
+      
   # # ------------------------
   # # Deploy to QA (requires approval)
   # # ------------------------
