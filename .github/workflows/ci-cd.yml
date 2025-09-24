@@ -91,12 +91,12 @@ jobs:
   # ------------------------
   # Deploy to Dev (auto) ECS Task + Service
   # ------------------------
+  
   ecs-deploy-dev:
     needs: ci
     name: Deploy to Dev - Single Image
     uses: aba-enterprise/enterprise-ci-templates/.github/workflows/ecs-deployment-template.yml@main
     with:
-      image-tag: ${{ github.repository }}-${{ github.ref_name }}-${{ github.sha }}
       environment: dev
       language: csharp
   
