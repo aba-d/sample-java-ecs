@@ -6,6 +6,7 @@
 # ---------- Stage 1: Base runtime images ----------
 ARG APP_LANGUAGE=csharp
 ARG LANGUAGE_VERSION=8.0
+ARG ENVIRONMENT=dev
 
 FROM mcr.microsoft.com/dotnet/aspnet:${LANGUAGE_VERSION} AS csharp-runtime
 FROM eclipse-temurin:${LANGUAGE_VERSION}-jre AS java-runtime
@@ -43,6 +44,12 @@ if [ \"$APP_LANGUAGE\" = 'csharp' ]; then \
 elif [ \"$APP_LANGUAGE\" = 'java' ]; then \
     JAR_FILE=$(ls *.jar | head -n 1); \
     exec java -jar $JAR_FILE; \
+elif [ \"$APP_LANGUAGE\" = 'java' ]; then \
+    JAR_FILE=$(ls *.jar | head -n 1); \
+    if [ -n \"$ENVIRONMENT\" ]; then \
+        export SPRING_PROFILES_ACTIVE=$ENVIRONMENT; \
+    fi; \
+    exec java -jar $JAR_FILE --spring.profiles.active=${SPRING_PROFILES_ACTIVE:-default}; \
 elif [ \"$APP_LANGUAGE\" = 'node' ]; then \
     ENTRY_FILE=$(ls *.js | head -n 1); \
     exec node $ENTRY_FILE; \
