@@ -40,16 +40,12 @@ EXPOSE $PORT
 # ---------- Stage 6: Dynamic entrypoint ----------
 CMD ["sh", "-c", "\
 if [ \"$APP_LANGUAGE\" = 'csharp' ]; then \
-    exec dotnet dotnet-ecs-sample.dll; \
+    DLL_FILE=$(ls *.dll | head -n 1); \
+    exec dotnet $DLL_FILE; \
 elif [ \"$APP_LANGUAGE\" = 'java' ]; then \
     JAR_FILE=$(ls *.jar | head -n 1); \
-    exec java -jar $JAR_FILE; \
-elif [ \"$APP_LANGUAGE\" = 'java' ]; then \
-    JAR_FILE=$(ls *.jar | head -n 1); \
-    if [ -n \"$ENVIRONMENT\" ]; then \
-        export SPRING_PROFILES_ACTIVE=$ENVIRONMENT; \
-    fi; \
-    exec java -jar $JAR_FILE --spring.profiles.active=${SPRING_PROFILES_ACTIVE:-default}; \
+    PROFILE=${ENVIRONMENT:-default}; \
+    exec java -jar $JAR_FILE --spring.profiles.active=$PROFILE; \
 elif [ \"$APP_LANGUAGE\" = 'node' ]; then \
     ENTRY_FILE=$(ls *.js | head -n 1); \
     exec node $ENTRY_FILE; \
