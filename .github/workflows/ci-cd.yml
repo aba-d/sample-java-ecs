@@ -98,25 +98,20 @@ jobs:
     with:
       environment: dev
       app-language: java
+    secrets: inherit
       
   # # ------------------------
   # # Deploy to QA (requires approval)
   # # ------------------------
-  # ecs-deploy-qa:
-  #   name: Deploy to QA
-  #   needs: ecs-deploy-dev
-  #   if: ${{ github.event_name == 'pull_request' || github.event_name == 'push' }}
-  #   uses: aba-enterprise/enterprise-ci-templates/.github/workflows/ecs-deployment-template.yml@main
-  #   with:
-  #     service-name: ${{ vars.SERVICE_NAME }}
-  #     task-family: ${{ vars.TASK_FAMILY }}
-  #     container-name: ${{ vars.CONTAINER_NAME }}
-  #     desired-count: ${{ vars.DESIRED_COUNT }}
-  #     image-tag: ${{ github.sha }}
-  #     environment: qa
-  #     language: csharp
-  #     extra-env: '[{\"name\":\"DB_URL\",\"value\":\"jdbc://mydb-qa\"},{\"name\":\"FEATURE_FLAG\",\"value\":\"true\"}]'
-  #   secrets: inherit
+  ecs-deploy-qa:
+    name: Deploy to QA
+    needs: ecs-deploy-dev
+    if: ${{ github.event_name == 'pull_request' || github.event_name == 'push' }}
+    uses: aba-enterprise/enterprise-ci-templates/.github/workflows/ecs-deployment-template.yml@main
+    with:
+      environment: qa
+      app-language: java
+    secrets: inherit
 
   # ------------------------
   # Notify the Jira
