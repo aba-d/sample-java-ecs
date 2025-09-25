@@ -50,5 +50,5 @@ elif [ \"$APP_LANGUAGE\" = 'python' ]; then \
     ENTRY_FILE=$(ls *.py | head -n 1); \
     exec python $ENTRY_FILE; \
 else \
-    echo \"Unsupported APP_LANGUAGE: $APP_LANGUAGE\"; exit 1; \
+    echo \"Unsupported language: $APP_LANGUAGE\"; exit 1; \
 fi"]
