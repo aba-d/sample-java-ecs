@@ -1,10 +1,10 @@
 # =========================================
-# Multi-language Dockerfile (Production-ready)
+# Multi-APP_LANGUAGE Dockerfile (Production-ready)
 # Supports: .NET, Java, Node.js, Python
 # =========================================
 
 # ---------- Stage 1: Base runtime images ----------
-ARG LANGUAGE=csharp
+ARG APP_LANGUAGE=csharp
 ARG LANGUAGE_VERSION=8.0
 
 FROM mcr.microsoft.com/dotnet/aspnet:${LANGUAGE_VERSION} AS csharp-runtime
@@ -13,7 +13,7 @@ FROM node:${LANGUAGE_VERSION}-alpine AS node-runtime
 FROM python:${LANGUAGE_VERSION}-slim AS python-runtime
 
 # ---------- Stage 2: Final image ----------
-FROM ${LANGUAGE}-runtime AS final
+FROM ${APP_LANGUAGE}-runtime AS final
 WORKDIR /app
 
 # Copy built artifacts from CI/CD workflow
@@ -38,17 +38,17 @@ EXPOSE $PORT
 
 # ---------- Stage 6: Dynamic entrypoint ----------
 CMD ["sh", "-c", "\
-if [ \"$LANGUAGE\" = 'csharp' ]; then \
+if [ \"$APP_LANGUAGE\" = 'csharp' ]; then \
     exec dotnet dotnet-ecs-sample.dll; \
-elif [ \"$LANGUAGE\" = 'java' ]; then \
+elif [ \"$APP_LANGUAGE\" = 'java' ]; then \
     JAR_FILE=$(ls *.jar | head -n 1); \
     exec java -jar $JAR_FILE; \
-elif [ \"$LANGUAGE\" = 'node' ]; then \
+elif [ \"$APP_LANGUAGE\" = 'node' ]; then \
     ENTRY_FILE=$(ls *.js | head -n 1); \
     exec node $ENTRY_FILE; \
-elif [ \"$LANGUAGE\" = 'python' ]; then \
+elif [ \"$APP_LANGUAGE\" = 'python' ]; then \
     ENTRY_FILE=$(ls *.py | head -n 1); \
     exec python $ENTRY_FILE; \
 else \
-    echo \"Unsupported language: $LANGUAGE\"; exit 1; \
+    echo \"Unsupported APP_LANGUAGE: $APP_LANGUAGE\"; exit 1; \
 fi"]

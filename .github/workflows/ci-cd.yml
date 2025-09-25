@@ -80,7 +80,7 @@ jobs:
     # needs: [Sonarqube-scan, Veracode-scan]
     uses: aba-enterprise/enterprise-ci-templates/.github/workflows/docker-build-push.yml@main
     with:
-      language: 'java'                           # change from 'csharp' to 'java'
+      app-language: 'java'                           # change from 'csharp' to 'java'
       project-path: 'sample-java-ecs'            # path to your Java project root
       dockerfile-path: './Dockerfile'  # Dockerfile path
       language-version: '17'                     # JDK version (change to match your project)
@@ -98,7 +98,7 @@ jobs:
     uses: aba-enterprise/enterprise-ci-templates/.github/workflows/ecs-deployment-template.yml@main
     with:
       environment: dev
-      language: java
+      app-language: java
       
   # # ------------------------
   # # Deploy to QA (requires approval)
