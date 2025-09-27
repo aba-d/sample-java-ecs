@@ -34,26 +34,27 @@ jobs:
   # ------------------------
   # Code Scan (Codeql)
   # ------------------------
-  # Codeql-scan:
-  #   name: GHAS scan
-  #   needs: commit-check
-  #   uses: aba-enterprise/enterprise-ci-templates/.github/workflows/codeql-template.yml@main
-  #   with:
-  #     language: 'java'   # change from 'csharp' to 'java'
-  #     projectPath: 'sample-java-ecs/pom.xml'   # path to your Java project pom.xml
-  #     buildCommand: 'mvn clean package -DskipTests'       # command to build your Java project
-  #   secrets: inherit
+  Codeql-scan:
+    name: GHAS Scan & Quality Gate
+    needs: Repository-Contribution-Compliance
+    uses: aba-enterprise/enterprise-ci-templates/.github/workflows/codeql-template.yml@main
+    with:
+      language: 'java'   # change from 'csharp' to 'java'
+      projectPath: 'sample-java-ecs/pom.xml'   # path to your Java project pom.xml
+      buildCommand: 'mvn clean package -DskipTests'       # command to build your Java project
+      run-codeql-gate-check: 'no'
+    secrets: inherit
   
   # ------------------------
   # Veracode
   # ------------------------
-  # Veracode-scan:
-  #   name: Veracode SAST
-  #   needs: Codeql-scan
-  #   uses: aba-enterprise/enterprise-ci-templates/.github/workflows/veracode-baseline-scan-template.yml@main
-  #   with:
-  #     run-veracode-gate-check: "no"
-  #   secrets: inherit
+  Veracode-scan:
+    name: Veracode SAST & Quality Gate
+    needs: Repository-Contribution-Compliance
+    uses: aba-enterprise/enterprise-ci-templates/.github/workflows/veracode-baseline-scan-template.yml@main
+    with:
+      run-veracode-gate-check: "yes"
+    secrets: inherit
   
   # ------------------------
   # Sonarqube scan
@@ -67,6 +68,7 @@ jobs:
       organizationKey: 'org-testfordemo'
       language: 'java'
       language-version: '17'
+      run-sonarqube-gate-check: 'no'
     secrets:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
@@ -90,7 +92,6 @@ jobs:
   # ------------------------
   # Deploy to Dev (auto) ECS Task + Service
   # ------------------------
-  
   ecs-deploy-dev:
     needs: ci
     name: Deploy to Dev - Single Image
