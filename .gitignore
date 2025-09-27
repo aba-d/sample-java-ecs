@@ -33,3 +33,13 @@ replay_pid*
 # OS files (optional)
 .DS_Store
 Thumbs.db
+
+# Coverage reports
+coverage/
+*.coverage
+*.coveragexml
+coverage.cobertura.xml
+
+# SonarScanner temporary files and SonarQube coverage summary
+.sonarqube/
+coverage-summary/
